@@ -64,11 +64,11 @@ def home():
 if __name__ == '__main__':
     
     # > localhost
-    app.run(debug=True)
+    # app.run(debug=True)
     
     # > Docker
     # app.run(debug=False, host='0.0.0.0')
     
     # Heroku
-    # port = os.environ.get('PORT', 5000)
-    # app.run(debug=False, host='0.0.0.0', port=port)
+    port = os.environ.get('PORT', 5000)
+    app.run(debug=False, host='0.0.0.0', port=port)
