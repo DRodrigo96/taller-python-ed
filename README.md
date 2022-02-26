@@ -1,2 +1,2 @@
-# Desarrollo del taller Python para equipos de data.
+# Desarrollo del taller Python
 ## Aplicación final: deployment ML model en Heroku.
