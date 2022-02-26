@@ -1,16 +1,20 @@
 
+
+# app.py
+# ==================================================
 # requirements
 from flask import Flask, render_template, request
 import joblib
 import pandas as pd
 # common
 import os
-# personal classes
+# used defined
 from personal_classes.myClasses import km_bpoints
 from personal_classes.myClasses import BinEncoder
 from personal_classes.myClasses import getMainPoints
+# --------------------------------------------------
 
-# variables
+# parameters
 with open(r'./items/final_model.pkl', 'rb') as bm:
     BEST_MODEL = joblib.load(bm)
 with open(r'./items/model_cols.pkl', 'rb') as mc:
@@ -29,7 +33,6 @@ def main():
 
 @app.route('/predict', methods=['GET', 'POST'])
 def home():
-
     try:
         new_data = [
             request.form['PROVINCIA_'],
@@ -49,21 +52,23 @@ def home():
         new_data_row['mp_c'] = km_bpoints(new_data_row, 'mp_c')
         new_data_row['IDDIST'] = BinEncoder(new_data_row['IDDIST'], pkl_path=DISTRITOS_CATEGORY_PKL_PATH)
         new_data_row = new_data_row.drop(LL, axis=1)
-
+        
         result = int(BEST_MODEL.predict(new_data_row)[0])
-
+    
     except:
         result = 'ERROR'
-
+    
     return render_template('results.html', data=result)
 
 # Execute application
 if __name__ == '__main__':
-
-    # app.run(debug=True) # --> localhost
-
-    # app.run(debug=False, host='0.0.0.0') # --> Docker
+    
+    # > localhost
+    app.run(debug=True)
+    
+    # > Docker
+    # app.run(debug=False, host='0.0.0.0')
     
     # Heroku
-    port = os.environ.get('PORT', 5000)
-    app.run(debug=False, host='0.0.0.0', port=port)
+    # port = os.environ.get('PORT', 5000)
+    # app.run(debug=False, host='0.0.0.0', port=port)
